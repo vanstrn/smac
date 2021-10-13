@@ -860,10 +860,17 @@ class StarCraft2Env(MultiAgentEnv):
         }
         return switcher.get(unit.unit_type, 15)
 
-    def save_replay(self):
+    def save_replay(self,replay_dir_override=None,prefix_override=None):
         """Save a replay."""
-        prefix = self.replay_prefix or self.map_name
-        replay_dir = self.replay_dir or ""
+        if prefix_override is None:
+            prefix = self.replay_prefix or self.map_name
+        else:
+            prefix = prefix_override
+        if replay_dir_override is None:
+            replay_dir = self.replay_dir or ""
+        else:
+            replay_dir = replay_dir_override
+            
         replay_path = self._run_config.save_replay(
             self._controller.save_replay(),
             replay_dir=replay_dir,
